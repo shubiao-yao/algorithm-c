@@ -7,13 +7,12 @@
  *
  * 这本书描述的不够详细，对链表的很多操作都需要读者自行实现。
  * 这里我通过书本的知识再结合自己查阅的其它资料进行了整理，在命名上可能跟书中的不一样。
- *
  */
 typedef int ElemType;
 typedef struct Node {
     ElemType data;
     struct Node *next;
-} LNode, *LinkList;
+} LinkNode, *LinkList;
 
 //创建链表
 LinkList Create() {
@@ -22,14 +21,14 @@ LinkList Create() {
     LinkList headerNode, assistNode, newNode;
 
     //初始化链表头结点
-    headerNode = (LinkList) malloc(sizeof(LinkList));
+    headerNode = (LinkList) malloc(sizeof(LinkNode));
     headerNode->next = NULL;
     //这时辅助节点和头结点共同指向了同一块内存地址
     assistNode = headerNode;
 
     for (int i = 1; i <= 5; i++) {
         //创建新的节点
-        newNode = (LinkList) malloc(sizeof(LinkList));
+        newNode = (LinkList) malloc(sizeof(LinkNode));
         if (newNode == NULL) {
             printf("申请空间失败！");
             exit(0);
@@ -67,7 +66,7 @@ void InsertBefore(LinkList headerNode, int position, ElemType value)//前插
         n++;
     }
     if (p != NULL) {
-        assistNode = (LinkList) malloc(sizeof(LNode));
+        assistNode = (LinkList) malloc(sizeof(LinkNode));
         assistNode->data = value;
         assistNode->next = p;
         currentNode->next = assistNode;
@@ -76,30 +75,29 @@ void InsertBefore(LinkList headerNode, int position, ElemType value)//前插
     }
 }
 
-void InsertAfter(LinkList L, int pos, ElemType value)
-{
-    LinkList p = L->next, s;
+void InsertAfter(LinkList headerNode, int position, ElemType value) {
+    LinkList p = headerNode->next, newNode;
 
     int n = 1;
-    while (p != NULL && n < pos) {
+    while (p != NULL && n < position) {
         p = p->next;
         n++;
     }
     if (p != NULL) {
-        s = (LinkList) malloc(sizeof(LNode));
-        s->data = value;
-        s->next = p->next;
-        p->next = s;
+        newNode = (LinkList) malloc(sizeof(LinkNode));
+        newNode->data = value;
+        newNode->next = p->next;
+        p->next = newNode;
     } else {
         printf("插入失败！\n");
     }
 }
 
-void Delete(LinkList L, int pos)
-{
-    LinkList p = L->next, q = L;
+void Delete(LinkList headerNode, int position) {
+    //p指向了链表的第一个元素所在的内存地址，q指向了链表头结点所在的内存地址
+    LinkList p = headerNode->next, q = headerNode;
     int n = 1;
-    while (p != NULL && n < pos) {
+    while (p != NULL && n < position) {
         q = p;
         p = p->next;
         n++;
