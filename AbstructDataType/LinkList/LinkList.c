@@ -65,6 +65,7 @@ void InsertBefore(LinkList headerNode, int position, ElemType value)//前插
         p = p->next;
         n++;
     }
+
     if (p != NULL) {
         assistNode = (LinkList) malloc(sizeof(LinkNode));
         assistNode->data = value;
@@ -72,6 +73,7 @@ void InsertBefore(LinkList headerNode, int position, ElemType value)//前插
         currentNode->next = assistNode;
     } else {
         printf("插入失败！\n");
+        exit(0);
     }
 }
 
